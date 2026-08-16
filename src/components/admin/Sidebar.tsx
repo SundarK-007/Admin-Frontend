@@ -121,17 +121,6 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
         } ${collapsed ? "md:w-20" : ""}`}
         style={{ background: "#7d2030" }}
       >
-        {/* Collapse toggle — desktop only, the mobile drawer has the topbar's
-            hamburger for open/close instead. */}
-        <button
-          type="button"
-          onClick={() => setCollapsed((v) => !v)}
-          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-          className="absolute -right-3 top-8 z-10 hidden h-7 w-7 items-center justify-center rounded-full border border-gold-600/50 bg-gradient-to-b from-gold-300 to-gold-600 text-navy-950 transition-[transform,box-shadow] duration-200 hover:scale-110 hover:shadow-[0_0_14px_2px_rgba(212,175,55,0.8)] md:flex"
-        >
-          <ChevronIcon className={`h-3.5 w-3.5 transition-transform duration-300 ${collapsed ? "-rotate-90" : "rotate-90"}`} />
-        </button>
-
         <div className={`flex items-center px-4 py-6 ${collapsed ? "md:justify-center md:px-2" : "justify-center"}`}>
           {collapsed ? (
             <img src="/SSD_Logo.png" alt="Sri Siva Durga Temple" className="hidden h-11 w-11 object-contain drop-shadow-[0_0_10px_rgba(212,175,55,0.35)] md:block" />
@@ -150,6 +139,22 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
               className="hidden h-auto w-full max-w-[188px] object-contain drop-shadow-[0_0_10px_rgba(212,175,55,0.25)] md:block"
             />
           )}
+        </div>
+
+        {/* Collapse toggle — desktop only, the mobile drawer has the topbar's
+            hamburger for open/close instead. Sits in normal flow directly
+            under the header (not absolutely positioned over it), so it never
+            overlaps the logo regardless of whether the mark alone or the
+            full wordmark lockup is showing. */}
+        <div className={`hidden border-b border-white/10 pb-2.5 md:flex ${collapsed ? "justify-center" : "justify-end px-4"}`}>
+          <button
+            type="button"
+            onClick={() => setCollapsed((v) => !v)}
+            aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+            className="flex h-7 w-7 items-center justify-center rounded-full border border-gold-600/50 bg-gradient-to-b from-gold-300 to-gold-600 text-navy-950 transition-[transform,box-shadow] duration-200 hover:scale-110 hover:shadow-[0_0_14px_2px_rgba(212,175,55,0.8)]"
+          >
+            <ChevronIcon className={`h-3.5 w-3.5 transition-transform duration-300 ${collapsed ? "-rotate-90" : "rotate-90"}`} />
+          </button>
         </div>
 
         <nav className="flex-1 space-y-1 overflow-y-auto px-3 pb-4">
