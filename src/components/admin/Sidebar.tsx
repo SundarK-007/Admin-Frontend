@@ -115,8 +115,15 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
         )}
       </AnimatePresence>
 
+      {/* md:z-30 (not md:z-auto) is load-bearing: the collapse-toggle button
+          below deliberately overlaps into the topbar's rectangle, and this
+          element always has a transform applied (the translate-x-* below),
+          which makes it a stacking context — so the button's own z-index
+          can't out-rank the topbar on its own. The aside itself has to
+          out-rank the topbar's `relative z-20` for that overlapping half to
+          render on top instead of hiding underneath it. */}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 flex h-full w-64 shrink-0 flex-col shadow-[6px_0_24px_-6px_rgba(0,0,0,0.35)] transition-[width,transform] duration-300 ease-out md:relative md:z-auto md:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-40 flex h-full w-64 shrink-0 flex-col shadow-[6px_0_24px_-6px_rgba(0,0,0,0.35)] transition-[width,transform] duration-300 ease-out md:relative md:z-30 md:translate-x-0 ${
           open ? "translate-x-0" : "-translate-x-full"
         } ${collapsed ? "md:w-20" : ""}`}
         style={{ background: "#7d2030" }}
@@ -147,10 +154,20 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
             on the topbar's own h-16), straddling both. It clears the logo
             safely: the logo is horizontally centered with padding, so it
             never reaches this far-right edge regardless of which header
-            variant (mark alone vs. full wordmark) is showing. z-30 keeps it
-            above the topbar's own z-20 so the half that overlaps into the
-            topbar isn't hidden underneath it. -right-3.5 centers the 28px
-            (h-7 w-7) button exactly on the boundary line. */}
+            variant (mark alone vs. full wordmark) is showing.
+            -right-3.5 centers the 28px (h-7 w-7) button exactly on the
+            boundary line.
+
+            The button's own z-30 isn't what keeps it visible — `<aside>`
+            always carries a `translate-x-*` class (open/-translate-x-full),
+            and any non-`none` transform creates a new stacking context. That
+            traps every z-index inside the sidebar's subtree, so the aside as
+            a WHOLE competes against the topbar using its own top-level
+            z-index — which was `md:z-auto` (participates in plain DOM order,
+            effectively z-0), losing to the topbar's `relative z-20` and
+            hiding the overlapping half of this button underneath it
+            regardless of its internal z-30. Fixed by giving <aside> itself
+            `md:z-30` — see that class for the full explanation. */}
         <button
           type="button"
           onClick={() => setCollapsed((v) => !v)}
