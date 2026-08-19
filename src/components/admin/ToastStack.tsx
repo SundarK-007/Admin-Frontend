@@ -58,11 +58,11 @@ function ToastIcon({ tone }: { tone: keyof typeof TONE_CARD }) {
  * and it shows up here regardless of which screen triggered it.
  *
  * Centered on the viewport like the modals it follows (FormDrawer,
- * ConfirmDialog) rather than corner-anchored, so it reads as the direct
- * continuation of the dialog that just closed instead of a separate,
- * easy-to-miss notification system. The backdrop stays absent on purpose —
- * unlike a modal this never blocks interaction, it just briefly occupies
- * the same visual center.
+ * ConfirmDialog), including their same dimmed/blurred backdrop, so it
+ * reads as the direct continuation of the dialog that just closed instead
+ * of a separate, easy-to-miss notification system. The backdrop is
+ * pointer-events-none, though — unlike a modal this never actually blocks
+ * interaction, it just looks the same for the second it's up.
  */
 export default function ToastStack() {
   const toasts = useToastStore((s) => s.toasts);
@@ -70,6 +70,18 @@ export default function ToastStack() {
 
   return (
     <div className="pointer-events-none fixed inset-0 z-[80] flex flex-col items-center justify-center gap-2.5 p-4">
+      <AnimatePresence>
+        {toasts.length > 0 && (
+          <motion.div
+            key="backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+            className="fixed inset-0 -z-10 bg-navy-950/50 backdrop-blur-sm"
+          />
+        )}
+      </AnimatePresence>
       <AnimatePresence>
         {toasts.map((t) => (
           <motion.div
