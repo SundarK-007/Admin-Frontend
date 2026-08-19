@@ -60,7 +60,7 @@ type SidebarProps = {
 // gold tint, not a filled badge. Every nav row carries a transparent
 // border-l-[3px] (see the base classes below) so toggling active/inactive
 // never shifts text by the border's width.
-const ACTIVE_NAV_CLASS = "border-amber-600 bg-gold-500/10 text-amber-700 font-semibold";
+const ACTIVE_NAV_CLASS = "border-amber-600 bg-gold-500/30 text-amber-800 font-semibold";
 const INACTIVE_NAV_CLASS = "border-transparent text-ink-300 hover:bg-ivory-100 hover:text-ink-100";
 
 /**
