@@ -2,21 +2,31 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useToastStore } from "../../lib/toastStore";
 import { PlusIcon, TrashIcon } from "../divine/icons";
 
-const TONE_STYLES = {
-  create: "border-gold-400/50 text-amber-700",
-  update: "border-blue-400/50 text-blue-700",
-  delete: "border-crimson-500/40 text-crimson-600",
-  error: "border-crimson-500/40 text-crimson-600",
+// Solid, saturated surfaces — the same gold-gradient-button language used
+// everywhere else in the app — rather than a white card with a small
+// tinted icon, which read as too close to the page background to notice.
+const TONE_CARD = {
+  create: "bg-gradient-to-r from-gold-300 via-gold-400 to-gold-500 text-navy-950 shadow-[0_20px_50px_-12px_rgba(212,175,55,0.6)]",
+  update: "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-[0_20px_50px_-12px_rgba(37,99,235,0.5)]",
+  delete: "bg-gradient-to-r from-crimson-500 to-crimson-600 text-white shadow-[0_20px_50px_-12px_rgba(179,39,63,0.55)]",
+  error: "bg-gradient-to-r from-crimson-500 to-crimson-600 text-white shadow-[0_20px_50px_-12px_rgba(179,39,63,0.55)]",
 } as const;
 
 const TONE_ICON_BG = {
-  create: "bg-gold-500/15",
-  update: "bg-blue-500/15",
-  delete: "bg-crimson-500/15",
-  error: "bg-crimson-500/15",
+  create: "bg-navy-950/10",
+  update: "bg-white/20",
+  delete: "bg-white/20",
+  error: "bg-white/20",
 } as const;
 
-function ToastIcon({ tone }: { tone: keyof typeof TONE_STYLES }) {
+const TONE_DISMISS = {
+  create: "text-navy-950/50 hover:text-navy-950",
+  update: "text-white/70 hover:text-white",
+  delete: "text-white/70 hover:text-white",
+  error: "text-white/70 hover:text-white",
+} as const;
+
+function ToastIcon({ tone }: { tone: keyof typeof TONE_CARD }) {
   if (tone === "create") return <PlusIcon />;
   if (tone === "delete") return <TrashIcon />;
   if (tone === "error") {
@@ -69,17 +79,17 @@ export default function ToastStack() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -8, scale: 0.96 }}
             transition={{ duration: 0.16, ease: "easeOut" }}
-            className={`pointer-events-auto flex w-full max-w-sm items-center gap-3 rounded-xl border bg-navy-900 px-4 py-3 text-[13.5px] shadow-[0_20px_50px_-15px_rgba(0,0,0,0.45)] ${TONE_STYLES[t.tone]}`}
+            className={`pointer-events-auto flex w-full max-w-sm items-center gap-3 rounded-xl px-4 py-3.5 text-[13.5px] font-medium ${TONE_CARD[t.tone]}`}
           >
             <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${TONE_ICON_BG[t.tone]}`}>
               <ToastIcon tone={t.tone} />
             </span>
-            <span className="flex-1 text-ink-100">{t.message}</span>
+            <span className="flex-1">{t.message}</span>
             <button
               type="button"
               onClick={() => dismiss(t.id)}
               aria-label="Dismiss"
-              className="shrink-0 text-ink-500 transition-colors hover:text-ink-100"
+              className={`shrink-0 transition-colors ${TONE_DISMISS[t.tone]}`}
             >
               <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M6 6l12 12M18 6L6 18" strokeLinecap="round" />
