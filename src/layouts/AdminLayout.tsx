@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "../components/admin/Sidebar";
 import Topbar from "../components/admin/Topbar";
+import ToastStack from "../components/admin/ToastStack";
 
 /**
  * The working shell every signed-in screen lives inside — deliberately
@@ -30,6 +31,7 @@ export default function AdminLayout() {
           </div>
         </main>
       </div>
+      <ToastStack />
     </div>
   );
 }

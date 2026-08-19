@@ -26,19 +26,28 @@ export function useApiResource<T>(client: AxiosInstance, basePath: string) {
     setTotal(data.total);
   });
 
+  // Each returns `true` on success — callers check `ok !== undefined` to
+  // decide whether to close their drawer/dialog, and useAsyncAction's catch
+  // block already returns `undefined` on failure. Without an explicit
+  // return here, a successful call and a failed one were indistinguishable
+  // (both resolved to `undefined`), so that check never fired and the
+  // create/edit drawer never closed on success.
   const create = useAsyncAction(async (body: WriteBody) => {
     await client.post(basePath, body);
     await list.run({});
+    return true;
   });
 
   const update = useAsyncAction(async (id: string, body: WriteBody) => {
     await client.put(`${basePath}/${id}`, body);
     await list.run({});
+    return true;
   });
 
   const remove = useAsyncAction(async (id: string) => {
     await client.delete(`${basePath}/${id}`);
     await list.run({});
+    return true;
   });
 
   return { items, total, list, create, update, remove };

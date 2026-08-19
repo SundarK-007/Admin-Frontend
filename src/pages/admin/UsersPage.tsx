@@ -18,6 +18,7 @@ import { useApiResource, type WriteBody } from "../../lib/useApiResource";
 import { MODULES, usePermissions } from "../../lib/permissions";
 import { emailField } from "../../lib/validation";
 import { USER_TYPES, USER_TYPE_LABEL } from "../../lib/userTypes";
+import { toast } from "../../lib/toastStore";
 
 /** Names only — the assignable-roles endpoint deliberately omits permissions. */
 type AssignableRole = { _id: string; name: string };
@@ -159,13 +160,19 @@ export default function UsersPage() {
 
   const submitCreate = createForm.handleSubmit(async (values) => {
     const ok = await create.run(toPayload(values, createImage));
-    if (ok !== undefined) setDrawerOpen(false);
+    if (ok !== undefined) {
+      setDrawerOpen(false);
+      toast.success("Admin user created — activation email sent.");
+    }
   });
 
   const submitEdit = editForm.handleSubmit(async (values) => {
     if (!editing) return;
     const ok = await update.run(editing._id, toPayload(values, editImage));
-    if (ok !== undefined) setDrawerOpen(false);
+    if (ok !== undefined) {
+      setDrawerOpen(false);
+      toast.success("Admin user updated successfully.");
+    }
   });
 
   const columns: DataTableColumn<AdminUser>[] = [

@@ -13,6 +13,7 @@ import { ShieldIcon } from "../../components/divine/icons";
 import { authApi } from "../../lib/api";
 import { useApiResource } from "../../lib/useApiResource";
 import { MODULES, usePermissions } from "../../lib/permissions";
+import { toast } from "../../lib/toastStore";
 
 export type Role = {
   _id: string;
@@ -90,7 +91,10 @@ export default function RolesPage() {
     const ok = editing
       ? await update.run(editing._id, values)
       : await create.run({ name: values.name, description: values.description, status: values.status });
-    if (ok !== undefined) setDrawerOpen(false);
+    if (ok !== undefined) {
+      setDrawerOpen(false);
+      toast.success(editing ? "Role updated successfully." : "Role created successfully.");
+    }
   });
 
   const columns: DataTableColumn<Role>[] = [
@@ -190,7 +194,10 @@ export default function RolesPage() {
         onConfirm={async () => {
           if (!deleting) return;
           const ok = await remove.run(deleting._id);
-          if (ok !== undefined) setDeleting(null);
+          if (ok !== undefined) {
+            setDeleting(null);
+            toast.success("Role deleted successfully.");
+          }
         }}
       />
 

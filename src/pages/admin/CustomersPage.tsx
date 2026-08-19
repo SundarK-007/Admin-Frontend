@@ -14,6 +14,7 @@ import { useApiResource } from "../../lib/useApiResource";
 import { MODULES, usePermissions } from "../../lib/permissions";
 import { emailField } from "../../lib/validation";
 import { formatTempleDateTime } from "../../lib/datetime";
+import { toast } from "../../lib/toastStore";
 
 type Customer = {
   _id: string;
@@ -105,7 +106,10 @@ export default function CustomersPage() {
       dateOfBirth: values.dateOfBirth || null,
       gender: values.gender || null,
     });
-    if (ok !== undefined) setEditing(null);
+    if (ok !== undefined) {
+      setEditing(null);
+      toast.success("Devotee profile updated successfully.");
+    }
   });
 
   const columns: DataTableColumn<Customer>[] = [
