@@ -74,16 +74,13 @@ export default function Topbar({ onMenuClick }: TopbarProps) {
    * (z-40+) so those still cover the header when open.
    */
   return (
-    <header
-      className="relative z-20 flex h-16 shrink-0 items-center justify-between gap-3 px-4 shadow-[0_6px_20px_-8px_rgba(0,0,0,0.35)] sm:px-6"
-      style={{ background: "#7d2030" }}
-    >
+    <header className="relative z-20 flex h-16 shrink-0 items-center justify-between gap-3 border-b border-gold-500/15 bg-navy-900 px-4 shadow-[0_6px_20px_-8px_rgba(0,0,0,0.06)] sm:px-6">
       <div className="flex min-w-0 items-center gap-3">
         <button
           type="button"
           onClick={onMenuClick}
           aria-label="Open menu"
-          className="-ml-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-white/80 transition-colors hover:bg-white/10 hover:text-white md:hidden"
+          className="-ml-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-ink-300 transition-colors hover:bg-ivory-100 hover:text-ink-100 md:hidden"
         >
           <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
             <path d="M4 6h16M4 12h16M4 18h16" strokeLinecap="round" />
@@ -91,7 +88,7 @@ export default function Topbar({ onMenuClick }: TopbarProps) {
         </button>
         {/* Hidden on the narrowest screens so the clock isn't squeezed — the
             sidebar drawer carries the same branding there. */}
-        <p className="hidden truncate font-accent text-[13px] tracking-wide text-gold-100 sm:block">
+        <p className="hidden truncate font-accent text-[13px] tracking-wide text-amber-700 sm:block">
           Sri Siva Durga Temple
         </p>
       </div>
@@ -99,22 +96,22 @@ export default function Topbar({ onMenuClick }: TopbarProps) {
       <div className="flex shrink-0 items-center gap-3">
         <TempleClock />
 
-        <span aria-hidden="true" className="hidden h-7 w-px bg-white/20 sm:block" />
+        <span aria-hidden="true" className="hidden h-7 w-px bg-gold-500/20 sm:block" />
 
         <div className="relative" ref={menuRef}>
           <button
             type="button"
             onClick={() => setMenuOpen((v) => !v)}
-            className="group flex items-center gap-2.5 rounded-full py-1 pl-1 pr-1 transition-colors hover:bg-white/10 sm:pr-3"
+            className="group flex items-center gap-2.5 rounded-full py-1 pl-1 pr-1 transition-colors hover:bg-ivory-100 sm:pr-3"
           >
             <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-b from-gold-300 to-gold-600 text-[12px] font-semibold text-navy-950 shadow-[0_0_0_0_rgba(212,175,55,0.5)] transition-shadow duration-300 group-hover:shadow-[0_0_14px_1px_rgba(212,175,55,0.5)]">
               {user ? initials(user.name) : "?"}
             </span>
             <span className="hidden text-left lg:block">
-              <span className="block max-w-[140px] truncate text-[13px] leading-tight text-white">
+              <span className="block max-w-[140px] truncate text-[13px] leading-tight text-ink-100">
                 {user?.name ?? "Unknown"}
               </span>
-              <span className="block text-[11px] leading-tight text-gold-200/85">
+              <span className="block text-[11px] leading-tight text-amber-600/85">
                 {user ? USER_TYPE_LABEL[user.userType] ?? user.userType : ""}
               </span>
             </span>

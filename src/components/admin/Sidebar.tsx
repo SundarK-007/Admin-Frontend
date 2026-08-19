@@ -56,13 +56,12 @@ type SidebarProps = {
 };
 
 // The selected-item treatment, shared by the top-level leaf, the group
-// header, and its nested children — a raised metallic-gold badge (inset
-// top highlight + a symmetric all-around glow, not a directional drop
-// shadow, so it doesn't read as a dark line under the pill) rather than a
-// flat tint, so "selected" reads unmistakably against the crimson rail.
-const ACTIVE_NAV_CLASS =
-  "bg-gradient-to-b from-gold-300 via-gold-500 to-gold-600 text-navy-950 font-medium shadow-[inset_0_1px_0_rgba(255,255,255,0.6),0_0_14px_-2px_rgba(212,175,55,0.75)]";
-const INACTIVE_NAV_CLASS = "text-white/70 hover:bg-white/10 hover:text-white";
+// header, and its nested children — a slim left accent bar plus a soft
+// gold tint, not a filled badge. Every nav row carries a transparent
+// border-l-[3px] (see the base classes below) so toggling active/inactive
+// never shifts text by the border's width.
+const ACTIVE_NAV_CLASS = "border-amber-600 bg-gold-500/10 text-amber-700 font-semibold";
+const INACTIVE_NAV_CLASS = "border-transparent text-ink-300 hover:bg-ivory-100 hover:text-ink-100";
 
 /**
  * Static column on desktop; a slide-in drawer with a backdrop below `md`.
@@ -123,10 +122,9 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
           out-rank the topbar's `relative z-20` for that overlapping half to
           render on top instead of hiding underneath it. */}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 flex h-full w-64 shrink-0 flex-col shadow-[6px_0_24px_-6px_rgba(0,0,0,0.35)] transition-[width,transform] duration-300 ease-out md:relative md:z-30 md:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-40 flex h-full w-64 shrink-0 flex-col border-r border-gold-500/15 bg-navy-900 shadow-[6px_0_24px_-6px_rgba(0,0,0,0.08)] transition-[width,transform] duration-300 ease-out md:relative md:z-30 md:translate-x-0 ${
           open ? "translate-x-0" : "-translate-x-full"
         } ${collapsed ? "md:w-20" : ""}`}
-        style={{ background: "#7d2030" }}
       >
         <div className={`flex items-center px-4 py-6 ${collapsed ? "md:justify-center md:px-2" : "justify-center"}`}>
           {collapsed ? (
@@ -205,13 +203,13 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
             return (
               <div
                 key={item.label}
-                className={`flex cursor-not-allowed items-center gap-3 rounded-xl px-3 py-2.5 text-[13.5px] text-white/35 ${collapsed ? "md:justify-center" : ""}`}
+                className={`flex cursor-not-allowed items-center gap-3 rounded-xl px-3 py-2.5 text-[13.5px] text-ink-500/60 ${collapsed ? "md:justify-center" : ""}`}
                 title={item.soon ? `Arrives ${item.soon} of the Build Sequence` : "Not built yet"}
               >
                 <span className="shrink-0">{item.icon}</span>
                 <span className={`flex-1 ${collapsed ? "md:hidden" : ""}`}>{item.label}</span>
                 {item.soon && (
-                  <span className={`rounded-full border border-white/15 px-2 py-0.5 text-[10px] tracking-wide text-white/50 ${collapsed ? "md:hidden" : ""}`}>
+                  <span className={`rounded-full border border-gold-500/20 px-2 py-0.5 text-[10px] tracking-wide text-ink-500 ${collapsed ? "md:hidden" : ""}`}>
                     {item.soon}
                   </span>
                 )}
@@ -220,7 +218,7 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
           })}
         </nav>
 
-        <div className={`border-t border-white/10 px-5 py-4 text-[11px] text-white/45 ${collapsed ? "md:hidden" : ""}`}>
+        <div className={`border-t border-gold-500/10 px-5 py-4 text-[11px] text-ink-500 ${collapsed ? "md:hidden" : ""}`}>
           Sri Siva Durga Temple &copy; {new Date().getFullYear()}
         </div>
       </aside>
@@ -247,7 +245,7 @@ function NavLeafLink({
       onClick={onNavigate}
       title={collapsed ? label : undefined}
       className={({ isActive }) =>
-        `flex items-center gap-3 rounded-xl px-3 py-2.5 text-[13.5px] transition-colors ${collapsed ? "md:justify-center" : ""} ${
+        `flex items-center gap-3 rounded-xl border-l-[3px] py-2.5 pl-[9px] pr-3 text-[13.5px] transition-colors ${collapsed ? "md:justify-center" : ""} ${
           isActive ? ACTIVE_NAV_CLASS : INACTIVE_NAV_CLASS
         }`
       }
@@ -299,7 +297,7 @@ function NavGroup({
         onClick={handleClick}
         aria-expanded={expanded}
         title={collapsed ? item.label : undefined}
-        className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-[13.5px] transition-colors ${collapsed ? "md:justify-center" : ""} ${
+        className={`flex w-full items-center gap-3 rounded-xl border-l-[3px] py-2.5 pl-[9px] pr-3 text-[13.5px] transition-colors ${collapsed ? "md:justify-center" : ""} ${
           holdsCurrentRoute && !expanded ? ACTIVE_NAV_CLASS : INACTIVE_NAV_CLASS
         }`}
       >
@@ -321,14 +319,14 @@ function NavGroup({
           >
             {/* The rail gives the children a visible spine to hang from, so
                 the nesting reads at a glance rather than from indent alone. */}
-            <div className="ml-[22px] mt-1 space-y-0.5 border-l border-white/15 pl-3">
+            <div className="ml-[22px] mt-1 space-y-0.5 border-l border-gold-500/15 pl-3">
               {(item.children ?? []).map((child) => (
                 <li key={child.to}>
                   <NavLink
                     to={child.to}
                     onClick={onNavigate}
                     className={({ isActive }) =>
-                      `relative block rounded-lg px-3 py-2 text-[13px] transition-colors ${
+                      `relative block rounded-lg border-l-[3px] py-2 pl-[9px] pr-3 text-[13px] transition-colors ${
                         isActive ? ACTIVE_NAV_CLASS : INACTIVE_NAV_CLASS
                       }`
                     }

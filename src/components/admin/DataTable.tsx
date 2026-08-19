@@ -98,16 +98,16 @@ export default function DataTable<T>({
         />
       </div>
 
-      <div className="overflow-x-auto rounded-2xl border border-gold-500/15 bg-navy-900/60">
+      <div className="overflow-x-auto rounded-2xl border border-gold-500/15 bg-navy-900">
         <table className="w-full min-w-[640px] text-left text-[13.5px]">
           <thead>
-            <tr className="border-b border-gold-500/10 text-[11px] uppercase tracking-wide text-ink-500">
+            <tr className="border-b border-gold-500/15 bg-navy-600 text-[11px] uppercase tracking-wide text-ink-100">
               {columns.map((col) => (
-                <th key={col.key} className={`px-5 py-3 font-normal ${col.className ?? ""}`}>
+                <th key={col.key} className={`px-5 py-3 font-semibold ${col.className ?? ""}`}>
                   {col.label}
                 </th>
               ))}
-              {rowActions && <th className="px-5 py-3 text-right font-normal">Actions</th>}
+              {rowActions && <th className="px-5 py-3 text-right font-semibold">Actions</th>}
             </tr>
           </thead>
           <tbody>
