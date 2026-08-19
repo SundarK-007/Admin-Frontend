@@ -108,7 +108,7 @@ export default function CustomersPage() {
     });
     if (ok !== undefined) {
       setEditing(null);
-      toast.success("Devotee profile updated successfully.");
+      toast.updated("Devotee profile updated successfully.");
     }
   });
 

@@ -93,7 +93,8 @@ export default function RolesPage() {
       : await create.run({ name: values.name, description: values.description, status: values.status });
     if (ok !== undefined) {
       setDrawerOpen(false);
-      toast.success(editing ? "Role updated successfully." : "Role created successfully.");
+      if (editing) toast.updated("Role updated successfully.");
+      else toast.created("Role created successfully.");
     }
   });
 
@@ -196,7 +197,7 @@ export default function RolesPage() {
           const ok = await remove.run(deleting._id);
           if (ok !== undefined) {
             setDeleting(null);
-            toast.success("Role deleted successfully.");
+            toast.deleted("Role deleted successfully.");
           }
         }}
       />

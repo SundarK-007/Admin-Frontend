@@ -162,7 +162,7 @@ export default function UsersPage() {
     const ok = await create.run(toPayload(values, createImage));
     if (ok !== undefined) {
       setDrawerOpen(false);
-      toast.success("Admin user created — activation email sent.");
+      toast.created("Admin user created — activation email sent.");
     }
   });
 
@@ -171,7 +171,7 @@ export default function UsersPage() {
     const ok = await update.run(editing._id, toPayload(values, editImage));
     if (ok !== undefined) {
       setDrawerOpen(false);
-      toast.success("Admin user updated successfully.");
+      toast.updated("Admin user updated successfully.");
     }
   });
 

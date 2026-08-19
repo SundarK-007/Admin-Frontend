@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type ToastTone = "success" | "error";
+type ToastTone = "create" | "update" | "delete" | "error";
 type ToastEntry = { id: number; message: string; tone: ToastTone };
 
 type ToastState = {
@@ -25,12 +25,16 @@ function show(message: string, tone: ToastTone) {
 }
 
 /**
- * Fire-and-forget success/error notices for actions that already closed
- * their own modal — create/update/delete across every master screen call
- * this right after the drawer/dialog closes, so "it worked" is confirmed
+ * Fire-and-forget notices for actions that already closed their own modal —
+ * create/update/delete across every master screen call the matching one
+ * right after the drawer/dialog closes, so "it worked" is confirmed
  * somewhere durable rather than only implied by the modal disappearing.
+ * Each tone gets its own color in ToastStack (gold/blue/crimson) so the
+ * kind of change that just happened is legible at a glance.
  */
 export const toast = {
-  success: (message: string) => show(message, "success"),
+  created: (message: string) => show(message, "create"),
+  updated: (message: string) => show(message, "update"),
+  deleted: (message: string) => show(message, "delete"),
   error: (message: string) => show(message, "error"),
 };
